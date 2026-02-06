@@ -84,15 +84,15 @@ func (b *Batcher) Add(event Event) error {
 	b.queue = append(b.queue, event)
 
 	// Auto-flush if we've reached FlushAt threshold
+	// Use async flush to avoid blocking the caller
 	if len(b.queue) >= b.config.FlushAt {
-		// Unlock before flushing to avoid deadlock
-		b.mu.Unlock()
-		if err := b.Flush(context.Background()); err != nil {
-			if b.config.Debug {
-				log.Printf("[Langfuse] Error auto-flushing: %v", err)
+		go func() {
+			if err := b.Flush(context.Background()); err != nil {
+				if b.config.Debug {
+					log.Printf("[Langfuse] Error auto-flushing: %v", err)
+				}
 			}
-		}
-		b.mu.Lock()
+		}()
 	}
 
 	return nil
