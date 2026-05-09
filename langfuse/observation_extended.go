@@ -20,13 +20,13 @@ func (c *Client) CreateAgent(traceID string, params AgentParams) (string, error)
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeAgentCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -53,13 +53,13 @@ func (c *Client) CreateTool(traceID string, params ToolParams) (string, error) {
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeToolCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -86,13 +86,13 @@ func (c *Client) CreateChain(traceID string, params ChainParams) (string, error)
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeChainCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -119,13 +119,13 @@ func (c *Client) CreateRetriever(traceID string, params RetrieverParams) (string
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeRetrieverCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -152,13 +152,13 @@ func (c *Client) CreateEvaluator(traceID string, params EvaluatorParams) (string
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeEvaluatorCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -185,7 +185,7 @@ func (c *Client) CreateEmbedding(traceID string, params EmbeddingParams) (string
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	if params.EmbeddingModel != nil {
@@ -199,7 +199,7 @@ func (c *Client) CreateEmbedding(traceID string, params EmbeddingParams) (string
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeEmbeddingCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -228,7 +228,7 @@ func (c *Client) CreateGuardrail(traceID string, params GuardrailParams) (string
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeGuardrailCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -248,7 +248,7 @@ func (c *Client) CreateSdkLog(params SdkLogParams) error {
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeSdkLog,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -260,13 +260,13 @@ func (c *Client) UpdateTool(toolID string, params ToolParams) error {
 	body := observationToBody(params.ObservationParams, toolID)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeSpanUpdate,  // Tool 是 Span 的一种，使用 span-update
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 

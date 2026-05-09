@@ -71,7 +71,7 @@ func (c *Client) CreateTrace(params TraceParams) (*Trace, error) {
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeTraceCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      trace.toBody(),
 	}
 
@@ -93,7 +93,7 @@ func (t *Trace) toBody() map[string]interface{} {
 	}
 
 	if t.params.Timestamp != nil {
-		body["timestamp"] = t.params.Timestamp.Format(time.RFC3339Nano)
+		body["timestamp"] = t.params.Timestamp.UTC().Format(time.RFC3339Nano)
 	}
 
 	if t.params.Input != nil {
@@ -181,7 +181,7 @@ func (t *Trace) Update(params TraceParams) error {
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeTraceCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      t.toBody(),
 	}
 

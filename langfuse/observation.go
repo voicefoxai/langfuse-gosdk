@@ -143,13 +143,13 @@ func (c *Client) CreateSpan(traceID string, params SpanParams) (string, error) {
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeSpanCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -179,7 +179,7 @@ func (c *Client) CreateEvent(traceID string, params EventParams) (string, error)
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeEventCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -207,7 +207,7 @@ func (c *Client) CreateGeneration(traceID string, params GenerationParams) (stri
 	body := observationToBody(params.ObservationParams, id)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	if params.Model != nil {
@@ -231,13 +231,13 @@ func (c *Client) CreateGeneration(traceID string, params GenerationParams) (stri
 	}
 
 	if params.CompletionStartTime != nil {
-		body["completionStartTime"] = params.CompletionStartTime.Format(time.RFC3339Nano)
+		body["completionStartTime"] = params.CompletionStartTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeGenerationCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -253,13 +253,13 @@ func (c *Client) UpdateSpan(spanID string, params SpanParams) error {
 	body := observationToBody(params.ObservationParams, spanID)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeSpanUpdate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -271,7 +271,7 @@ func (c *Client) UpdateGeneration(generationID string, params GenerationParams) 
 	body := observationToBody(params.ObservationParams, generationID)
 
 	if params.EndTime != nil {
-		body["endTime"] = params.EndTime.Format(time.RFC3339Nano)
+		body["endTime"] = params.EndTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	if params.Model != nil {
@@ -295,13 +295,13 @@ func (c *Client) UpdateGeneration(generationID string, params GenerationParams) 
 	}
 
 	if params.CompletionStartTime != nil {
-		body["completionStartTime"] = params.CompletionStartTime.Format(time.RFC3339Nano)
+		body["completionStartTime"] = params.CompletionStartTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeGenerationUpdate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
@@ -326,7 +326,7 @@ func observationToBody(params ObservationParams, id string) map[string]interface
 	}
 
 	if params.StartTime != nil {
-		body["startTime"] = params.StartTime.Format(time.RFC3339Nano)
+		body["startTime"] = params.StartTime.UTC().Format(time.RFC3339Nano)
 	}
 
 	if params.Metadata != nil {

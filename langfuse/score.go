@@ -43,7 +43,7 @@ func (c *Client) CreateScore(params ScoreParams) (string, error) {
 	event := Event{
 		ID:        generateID(),
 		Type:      EventTypeScoreCreate,
-		Timestamp: time.Now(),
+		Timestamp: time.Now().UTC(),
 		Body:      body,
 	}
 
