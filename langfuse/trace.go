@@ -157,12 +157,18 @@ func (t *Trace) Update(params TraceParams) error {
 		t.params.Output = params.Output
 	}
 	if params.Metadata != nil {
-		if t.params.Metadata == nil {
-			t.params.Metadata = make(map[string]interface{})
+		// Build a NEW merged map instead of mutating t.params.Metadata in place.
+		// Earlier events enqueued via toBody() still alias the old map, and the
+		// batcher marshals them asynchronously — an in-place insert here races that
+		// marshal and panics ("index out of range" in encoding/json mapEncoder).
+		merged := make(map[string]interface{}, len(t.params.Metadata)+len(params.Metadata))
+		for k, v := range t.params.Metadata {
+			merged[k] = v
 		}
 		for k, v := range params.Metadata {
-			t.params.Metadata[k] = v
+			merged[k] = v
 		}
+		t.params.Metadata = merged
 	}
 	if params.UserID != nil {
 		t.params.UserID = params.UserID
